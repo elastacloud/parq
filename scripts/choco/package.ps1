@@ -19,6 +19,15 @@ Set-Location ..
 
 # Package
 Set-Location .\parq
+
+# Verification of .zip 
+cp VERIFICATION.template.txt .\tools\VERIFICATION.txt
+$verification = Get-Content .\tools\VERIFICATION.txt
+$hash = (Get-FileHash .\tools\parqInstall.zip).Hash
+$versionReplaced = $verification.Replace("#tag#", $version)
+$hashReplaced = $versionReplaced.Replace("#hash#", $hash)
+Set-Content .\tools\VERIFICATION.txt $hashReplaced
+
 # Update Version Number
 $xml = [xml](Get-Content .\parq.nuspec)
 $nsmgr = new-object System.Xml.XmlNamespaceManager($xml.NameTable);
