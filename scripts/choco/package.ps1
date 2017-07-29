@@ -13,8 +13,12 @@ Write-Host The Version of Parq built is $version
 Add-Type -assembly "System.IO.Compression.FileSystem"
 [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Location).Path, [System.IO.Path]::Combine((Get-Location).Path, "..\parq\tools\parqInstall.zip"))
 
+# Create Release
+Set-Location ..
+ .\github-release\githubreleaseany.ps1 -token $env:githubparq -tag $version -name "Parq v$version" -descr "cmdline for parquet-dotnet" -user elastacloud -project parq -file .\choco\parq\tools\parqInstall.zip
+
 # Package
-Set-Location ..\parq
+Set-Location .\parq
 # Update Version Number
 $xml = [xml](Get-Content .\parq.nuspec)
 $nsmgr = new-object System.Xml.XmlNamespaceManager($xml.NameTable);
