@@ -1,0 +1,12 @@
+VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+The embedded software have been built from source held at <https://github.com/elastacloud/parquet-dotnet>
+
+1. The full build script is hosted here: <https://github.com/elastacloud/parquet-dotnet/blob/master/scripts/choco/package.ps1>
+2. The build is executed on a hosted file server in Elastacloud 
+3. There is no checksum enacted as releases are parquet-dotnet specific and not parq specific. As part of Milestone 2 into Milestone 3 
+we are moving Parq to a separate repository which will have releases that can be verified against. Check the task <https://github.com/elastacloud/parquet-dotnet/issues/158> for progress.
+
+The file 'LICENSE.txt' has been obtained from <https://opensource.org/licenses/MIT>
