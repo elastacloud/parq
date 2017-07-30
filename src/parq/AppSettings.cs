@@ -17,6 +17,8 @@ namespace parq
 
       public readonly Option<bool> DisplayNulls = new Option<bool>(true);
 
+      public readonly Option<bool> DisplayTypes = new Option<bool>(false);
+
       public readonly Option<string> TruncationIdentifier = new Option<string>("*");
 
       public readonly Option<bool> ShowVersion = new Option<bool>(false);

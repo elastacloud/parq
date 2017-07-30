@@ -74,7 +74,7 @@ namespace parq.Display.Views
 
       internal int GetRowCount()
       {
-         return viewPort.Height - 7;
+         return viewPort.Height - 8;
       }
 
       private void DrawSheet(ViewModel viewModel, ConsoleSheet currentSheet, ConsoleFold currentFold,  ViewPort viewPort)
@@ -241,7 +241,16 @@ namespace parq.Display.Views
 
       private void WriteSummary(ViewModel viewModel, ConsoleSheet currentSheet, ConsoleFold currentFold)
       {
-         Console.WriteLine("Showing {0} to {1} of {2} Columns. Use Arrow Keys to Navigate.", currentSheet.IndexStart, currentSheet.IndexEnd, viewModel.Columns.Count());
+         Console.Write("Showing {0} to {1} of {2} Columns. Use Arrow Keys to Navigate. ", currentSheet.IndexStart, currentSheet.IndexEnd, viewModel.Columns.Count());
+
+         if (AppSettings.Instance.DisplayNulls.Value)
+         {
+             Console.ForegroundColor = ConsoleColor.Blue;
+             Console.Write(".NET type name. ");
+             Console.ForegroundColor = ConsoleColor.Cyan;
+             Console.Write("? denotes Nullable=true.{0}", Environment.NewLine);
+             Console.ResetColor();
+         }
          Console.WriteLine("Showing {0} to {1} of {2} Rows Total. Press ENTER to quit;", currentFold.IndexStart, currentFold.IndexEnd, viewModel.RowCount);
       }
       private void WriteHeaderLine(ConsoleSheet sheet, ViewPort viewPort)
@@ -268,7 +277,39 @@ namespace parq.Display.Views
             Console.Write(verticalSeparator);
          }
          Console.Write(Environment.NewLine);
-      }
+            if (AppSettings.Instance.DisplayTypes.Value)
+            {
+                Console.Write(verticalSeparator);
+                foreach (var column in sheet.Columns)
+                {
+                    var offset = column.isNullable ? 1 : 0;
+                    if (IsOverlyLargeColumn(column, viewPort))
+                    {
+                        for (int i = 0; i < viewPort.Width - offset - column.type.Name.Length - (verticalSeparator.Length * 2) - Environment.NewLine.Length; i++)
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < column.columnWidth - column.type.Name.Length - offset; i++)
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(column.type.Name);
+                    if (column.isNullable)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("?");
+                        Console.ResetColor();
+                    }
+                    Console.Write(verticalSeparator);
+                }
+                Console.Write(Environment.NewLine);
+            }
+        }
 
       private void WriteValues(ViewModel viewModel, ConsoleSheet columnsFitToScreen, ConsoleFold foldedRows, ViewPort viewPort)
       {
