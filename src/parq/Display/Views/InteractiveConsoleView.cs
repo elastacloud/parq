@@ -12,6 +12,7 @@ namespace parq.Display.Views
     {
       private const string verticalSeparator = "|";
       private const string horizontalSeparator = "-";
+      private const string cellDivider = "+";
       private Stack<ConsoleSheet> unreadSheets;
       private Stack<ConsoleSheet> readSheets = new Stack<ConsoleSheet>();
       private Stack<ConsoleFold> unreadFolds;
@@ -315,7 +316,7 @@ namespace parq.Display.Views
       }
       private void DrawLine(ConsoleSheet consoleSheet, ViewPort viewPort)
       {
-         Console.Write(verticalSeparator);
+         Console.Write(cellDivider);
          foreach (var column in consoleSheet.Columns)
          {
             if (IsOverlyLargeColumn(column, viewPort))
@@ -332,7 +333,7 @@ namespace parq.Display.Views
                   Console.Write(horizontalSeparator);
                }
             }
-            Console.Write(verticalSeparator);
+            Console.Write(cellDivider);
          }
          Console.Write(Environment.NewLine);
       }

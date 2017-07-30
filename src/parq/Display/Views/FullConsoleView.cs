@@ -13,6 +13,7 @@ namespace parq.Display.Views
    {
       private const string verticalSeparator = "|";
       private const string horizontalSeparator = "-";
+      private const string cellDivider = "+";
 
       public void Draw(ViewModel viewModel)
       {
@@ -72,14 +73,14 @@ namespace parq.Display.Views
       }
       private void DrawLine(IEnumerable<ColumnDetails> columns)
       {
-         Console.Write(verticalSeparator);
+         Console.Write(cellDivider);
          foreach (int item in columns.Select(d => d.columnWidth))
          {
             for (int i = 0; i < item; i++)
             {
                Console.Write(horizontalSeparator);
             }
-            Console.Write(verticalSeparator);
+            Console.Write(cellDivider);
          }
          Console.Write(Environment.NewLine);
       }
