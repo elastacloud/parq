@@ -6,7 +6,10 @@ namespace parq.Display.Models
 {
    public class ColumnDetails
    {
-      public string columnName { get; set; }
+        public bool isNullable { get; set; }
+        public Type type { get; set; }
+
+        public string columnName { get; set; }
       public int columnWidth { get; set; }
 
       public string GetFormattedValue(object rawValue)

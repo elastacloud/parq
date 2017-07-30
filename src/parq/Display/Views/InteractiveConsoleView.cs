@@ -74,7 +74,7 @@ namespace parq.Display.Views
 
       internal int GetRowCount()
       {
-         return viewPort.Height - 7;
+         return viewPort.Height - 8;
       }
 
       private void DrawSheet(ViewModel viewModel, ConsoleSheet currentSheet, ConsoleFold currentFold,  ViewPort viewPort)
@@ -268,7 +268,36 @@ namespace parq.Display.Views
             Console.Write(verticalSeparator);
          }
          Console.Write(Environment.NewLine);
-      }
+         Console.Write(verticalSeparator);
+        foreach (var column in sheet.Columns)
+        {
+            var offset = column.isNullable ? 1 : 0;
+            if (IsOverlyLargeColumn(column, viewPort))
+            {
+                for (int i = 0; i < viewPort.Width - offset - column.type.Name.Length - (verticalSeparator.Length * 2) - Environment.NewLine.Length; i++)
+                {
+                    Console.Write(" ");
+                }
+            }
+            else
+            {
+                for (int i = 0; i < column.columnWidth - column.type.Name.Length - offset; i++)
+                {
+                    Console.Write(" ");
+                }
+            }
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write(column.type.Name);
+            if (column.isNullable)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write("?");
+                Console.ResetColor();
+            }
+            Console.Write(verticalSeparator);
+        }
+        Console.Write(Environment.NewLine);
+        }
 
       private void WriteValues(ViewModel viewModel, ConsoleSheet columnsFitToScreen, ConsoleFold foldedRows, ViewPort viewPort)
       {
