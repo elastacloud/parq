@@ -9,11 +9,10 @@
     <authors>Andy Cross, Richard Conway, Ivan Gavryliuk</authors>
     <owners>Andy Cross</owners>
     <summary>Parq is a .NET runtime (written for Windows but will run elsewhere) that brings tooling for inspecting Parquet files to developers.</summary>
-    <description>(Find out more)[https://github.com/elastacloud/parq/blob/master/doc/parq.md] 
-    </description>
+    <description>Parq is a commandline tool for multiple OS for inspecting Apache Parquet files. This tools gives a simple data inspector which lists out the columns found in a Parquet data set and the data values for those columns.</description>
     <projectUrl>https://github.com/elastacloud/parq</projectUrl>
     <packageSourceUrl>https://chocolatey.org/api/v2/</packageSourceUrl>
-    <tags>parq parquet fileviewer admin</tags>
+    <tags>parq parquet fileviewer</tags>
     <copyright>Elastacloud Limited 2017</copyright>
     <licenseUrl>https://github.com/elastacloud/parq/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
