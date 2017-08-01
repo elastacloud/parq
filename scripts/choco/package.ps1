@@ -15,7 +15,7 @@ Add-Type -assembly "System.IO.Compression.FileSystem"
 
 # Create Release
 Set-Location ..
- .\github-release\githubreleaseany.ps1 -token $env:githubparq -tag $version -name "Parq v$version" -descr "cmdline for parquet-dotnet" -user elastacloud -project parq -file .\choco\parq\tools\parqInstall.zip
+ .\github-release\githubreleaseany.ps1 -token $env:githubparq -tag $version -name "Parq v$version" -descr "cmdline for parquet-dotnet" -user elastacloud -project parq -file .\parq\tools\parqInstall.zip
 
 # Package
 Set-Location .\parq
