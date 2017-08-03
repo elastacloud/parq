@@ -19,6 +19,7 @@
     <docsUrl>https://github.com/elastacloud/parq/blob/master/doc/parq.md</docsUrl>
     <bugTrackerUrl>https://github.com/elastacloud/parq/issues</bugTrackerUrl>
     <projectSourceUrl>https://github.com/elastacloud/parq/tree/master/src/parq</projectSourceUrl>
+    <iconUrl>https://cdn.rawgit.com/elastacloud/parq/master/doc/img/parquet.netw128.png</iconUrl>
   </metadata>
   <files>
     <file src="tools\**" target="tools" />
