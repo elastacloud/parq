@@ -121,7 +121,7 @@ namespace parq
       {
          var fileInfo = new System.IO.FileInfo(path);
          fileLen = fileInfo.Length;
-         return ParquetReader.ReadFile(path, null, new ReaderOptions() { Count = (int)take, Offset = (int)skip });
+         return ParquetReader.ReadFile(path, null, new ReaderOptions() { Count = take, Offset = skip });
       }
 
       public static DataSet ReadFromParquetFile(string path, out long fileLen)
