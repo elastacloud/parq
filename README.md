@@ -1,5 +1,7 @@
 # Parq
 
+![Logo](doc/img/parquet.net.png)
+
 This tools gives a simple data inspector which lists out the columns found in a Parquet data set and the data values for those columns. 
 
 To use, run ```dotnet parq.dll Mode=interactive InputFilePath=path/to/file.parquet DisplayMinWidth=10``` 
