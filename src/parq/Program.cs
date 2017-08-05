@@ -178,7 +178,7 @@ namespace parq
         {
             Console.WriteLine("parq\t\t-\tParquet File Inspector for .net");
             Console.WriteLine("Usage\t\t-\tparq.exe Mode=operation InputFilePath=[relativeStringPath] DisplayMinWidth=[10]");
-            Console.WriteLine("\t\t\tOperation one of: interactive (default), full, schema, rowcount, head, tail");
+            Console.WriteLine("\t\t\tOperation one of: interactive (default), full, schema, rowcount, head, tail, csv");
 
             if (!string.IsNullOrEmpty(warning))
             {
