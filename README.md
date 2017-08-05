@@ -14,6 +14,7 @@ Arguments include:
   * Rowcount - displays no data, but lists the rowcount of the parquet file
   * Head - takes the first n rows of the dataset (controlled by the Head property) and displays using the Full mode
   * Tail - takes the last n rows of the dataset (controlled by the Tail property) and displays using the Full mode
+  * CSV - takes the InputFilePath and converts to a parquet file at the OutputFilePath
 * InputFilePath - path to the input parquet file
 * DisplayMinWidth (int: default 10) - as noted earlier, the interactive and full mode both display column contents up to the width of the header as we don't currently enumerate cell contents before beginning to draw. Setting DisplayMinWidth allows for long cell contents to be display.
 * Expanded (bool: default False) - when a column value (individual cell) has a long body (longer than the header or the DisplayMinWidth) this setting removes the truncation of the cell (1234567...) and expands the column to the max column width of the whole dataset. Since it has to scan the whole dataset to find this max column width, there is a performance impact by setting this.
@@ -22,5 +23,8 @@ Arguments include:
 * TruncationIdentifer (string: default *) - in interactive mode only, if there are large columns by way of content which would wrap text based on the size of the console window (viewport), substring the cell and displays the supplied truncation identifier coloured yellow to identify as not from the original data. 
 * Head (int) - controls the number of rows to take in Mode=Head
 * Tail (int) - controls the number of rows to take in Mode=Tail
+* OutputFilePath - path to an output file, currently only used for CSV mode
+* CSVInferSchema (bool: default true) - defaults the schema when reading CSV files
+* CSVHasHeaders (bool: default true) - uses the first row to give properties names 
 
 ![Parq](doc/img/parq.png)
