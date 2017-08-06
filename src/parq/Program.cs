@@ -5,6 +5,7 @@ using parq.Display.Views;
 using Parquet.Data;
 using Config.Net;
 using Parquet.Formats;
+using parq.Exporters;
 
 namespace parq
 {
@@ -66,6 +67,37 @@ namespace parq
                             {
                                 writer.Write(ds);
                             }
+                        }
+                    }
+                }
+                else if (string.Compare(AppSettings.Instance.Mode, "excel", true) == 0)
+                {
+                    if (string.IsNullOrEmpty(AppSettings.Instance.OutputFilePath))
+                    {
+                        WriteHelp("Missing argument OutputFilePath");
+                    }
+                    else
+                    {
+                        var outputPath = System.IO.Path.Combine(AppContext.BaseDirectory, AppSettings.Instance.OutputFilePath);
+                        Verbose("Output file chosen as {0}", outputPath);
+
+                        if (System.IO.File.Exists(outputPath) && !AppSettings.Instance.Force.Value)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Error.WriteLine("ERROR: The path {0} already exists. Remove the file or try again with -Force=True", outputPath);
+                            Console.ResetColor();
+                            return;
+                        }
+
+                        long fileLen = 0;
+                        var dataSet = ReadFromParquetFile(path, out fileLen);
+                        var viewModel = new DisplayController().Get(dataSet);
+
+                        Console.WriteLine("Converting {0} lines", dataSet.RowCount);
+
+                        using (var package = new ExcelExporter().Export(viewModel))
+                        {
+                            package.SaveAs(new System.IO.FileInfo(outputPath));
                         }
                     }
                 }

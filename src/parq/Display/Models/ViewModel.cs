@@ -12,5 +12,6 @@ namespace parq.Display.Models
       public List<object[]> Rows { get; internal set; }
       public long RowCount { get; internal set; }
       public Schema Schema { get; internal set; }
-   }
+        public string CreatedBy { get; internal set; }
+    }
 }
