@@ -2,6 +2,32 @@
 
 ![Logo](doc/img/parquet.net.png)
 
+## Getting Started
+
+### Windows 
+
+The preferred way to install Parq on Windows is to do so from Chocolatey. To do so, simply open a command shell and execute:
+
+```sh
+choco install parq
+```
+
+If you have an old version of parq and want to upgrade to the latest, use:
+
+```sh
+choco upgrade parq
+```
+
+Our versioning is based off Milestones, so you can see the Milestones in Issues and the aligned Projects in github to see what features are in which release. It is recommend to always use the latest as we take the parquet-dotnet releases in each milestone, and these often include bugfixes and optimisations. 
+
+For more information [see chocolatey page](https://chocolatey.org/packages/parq)
+
+### Linux
+
+We will be releasing a Debian package for parq soon, but for now, you must compile the assembly from source using dotnet build
+
+## Usage
+
 This tools gives a simple data inspector which lists out the columns found in a Parquet data set and the data values for those columns. 
 
 To use, run ```dotnet parq.dll Mode=interactive InputFilePath=path/to/file.parquet DisplayMinWidth=10``` 
