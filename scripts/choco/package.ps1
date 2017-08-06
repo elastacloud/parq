@@ -1,3 +1,6 @@
+param ([Boolean]$isPre=$true)
+
+
 # Build
 Set-Location ..\..\src\parq
 dotnet restore -r win10-x64
@@ -7,8 +10,12 @@ dotnet publish -c release -r win10-x64 -o ..\..\scripts\choco\build -f netcoreap
 Set-Location ..\..\scripts\choco\build
 $version = .\parq.exe ShowVersion=true
 
-Write-Host The Version of Parq built is $version
+if ($isPre) {
+    $version += "-alpha"
+}
 
+Write-Host The Version of Parq built is $version
+exit
 # Zip
 Add-Type -assembly "System.IO.Compression.FileSystem"
 [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Location).Path, [System.IO.Path]::Combine((Get-Location).Path, "..\parq\tools\parqInstall.zip"))
