@@ -34,72 +34,13 @@ namespace parq
                     Console.Error.WriteLine("The path {0} does not exist", path);
                     return;
                 }
-                else if (string.Compare(AppSettings.Instance.Mode, "csv", true) == 0)
+                else if (string.Compare(AppSettings.Instance.Mode, "import", true) == 0)
                 {
-                    if (string.IsNullOrEmpty(AppSettings.Instance.OutputFilePath))
-                    {
-                        WriteHelp("Missing argument OutputFilePath");
-                    }
-                    else
-                    {
-                        var outputPath = System.IO.Path.Combine(AppContext.BaseDirectory, AppSettings.Instance.OutputFilePath);
-                        Verbose("Output file chosen as {0}", outputPath);
-
-                        if (System.IO.File.Exists(outputPath) && !AppSettings.Instance.Force.Value)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Error.WriteLine("ERROR: The path {0} already exists. Remove the file or try again with -Force=True", outputPath);
-                            Console.ResetColor();
-                            return;
-                        }
-
-                        DataSet ds;
-                        using (var csvStream = System.IO.File.OpenRead(path))
-                        {
-                            ds = CsvFormat.ReadToDataSet(csvStream, new CsvOptions { InferSchema = AppSettings.Instance.CsvInferSchema.Value, HasHeaders = AppSettings.Instance.CsvHasHeaders.Value });
-                        }
-
-                        Console.WriteLine("Converting {0} lines", ds.RowCount);
-
-                        using (System.IO.Stream fileStream = System.IO.File.OpenWrite(outputPath))
-                        {
-                            using (var writer = new ParquetWriter(fileStream))
-                            {
-                                writer.Write(ds);
-                            }
-                        }
-                    }
+                    HandleImport(path);
                 }
-                else if (string.Compare(AppSettings.Instance.Mode, "excel", true) == 0)
+                else if (string.Compare(AppSettings.Instance.Mode, "export", true) == 0)
                 {
-                    if (string.IsNullOrEmpty(AppSettings.Instance.OutputFilePath))
-                    {
-                        WriteHelp("Missing argument OutputFilePath");
-                    }
-                    else
-                    {
-                        var outputPath = System.IO.Path.Combine(AppContext.BaseDirectory, AppSettings.Instance.OutputFilePath);
-                        Verbose("Output file chosen as {0}", outputPath);
-
-                        if (System.IO.File.Exists(outputPath) && !AppSettings.Instance.Force.Value)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.Error.WriteLine("ERROR: The path {0} already exists. Remove the file or try again with -Force=True", outputPath);
-                            Console.ResetColor();
-                            return;
-                        }
-
-                        long fileLen = 0;
-                        var dataSet = ReadFromParquetFile(path, out fileLen);
-                        var viewModel = new DisplayController().Get(dataSet);
-
-                        Console.WriteLine("Converting {0} lines", dataSet.RowCount);
-
-                        using (var package = new ExcelExporter().Export(viewModel))
-                        {
-                            package.SaveAs(new System.IO.FileInfo(outputPath));
-                        }
-                    }
+                    HandleExport(path);
                 }
                 else
                 {
@@ -175,6 +116,79 @@ namespace parq
             }
         }
 
+        private static void HandleExport(string sourcePath)
+        {
+            if (string.IsNullOrEmpty(AppSettings.Instance.OutputFilePath))
+            {
+                WriteHelp("Missing argument OutputFilePath");
+            }
+            else
+            {
+                var outputPath = System.IO.Path.Combine(AppContext.BaseDirectory, AppSettings.Instance.OutputFilePath);
+                Verbose("Output file chosen as {0}", outputPath);
+
+                if (System.IO.File.Exists(outputPath) && !AppSettings.Instance.Force.Value)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine("ERROR: The path {0} already exists. Remove the file or try again with -Force=True", outputPath);
+                    Console.ResetColor();
+                    return;
+                }
+
+                long fileLen = 0;
+                var dataSet = ReadFromParquetFile(sourcePath, out fileLen);
+                var viewModel = new DisplayController().Get(dataSet);
+
+                Console.WriteLine("Converting {0} lines", dataSet.RowCount);
+
+                if (string.Compare(AppSettings.Instance.ExportFormat.Value, "excel", true) == 0)
+                {
+                    new ExcelExporter().ExportAs(outputPath, viewModel);
+                }
+                else if (string.Compare(AppSettings.Instance.ExportFormat.Value, "csv", true) == 0)
+                {
+                    new CsvExporter().ExportAs(outputPath, viewModel);
+                }
+            }
+        }
+
+        private static void HandleImport(string sourcePath)
+        {
+            if (string.IsNullOrEmpty(AppSettings.Instance.OutputFilePath))
+            {
+                WriteHelp("Missing argument OutputFilePath");
+            }
+            else
+            {
+                var outputPath = System.IO.Path.Combine(AppContext.BaseDirectory, AppSettings.Instance.OutputFilePath);
+                Verbose("Output file chosen as {0}", outputPath);
+
+                if (System.IO.File.Exists(outputPath) && !AppSettings.Instance.Force.Value)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine("ERROR: The path {0} already exists. Remove the file or try again with -Force=True", outputPath);
+                    Console.ResetColor();
+                    return;
+                }
+
+                DataSet ds;
+                using (var csvStream = System.IO.File.OpenRead(sourcePath))
+                {
+                    ds = CsvFormat.ReadToDataSet(csvStream, new CsvOptions { InferSchema = AppSettings.Instance.CsvInferSchema.Value, HasHeaders = AppSettings.Instance.CsvHasHeaders.Value });
+                }
+
+                Console.WriteLine("Converting {0} lines", ds.RowCount);
+
+                using (System.IO.Stream fileStream = System.IO.File.OpenWrite(outputPath))
+                {
+                    using (var writer = new ParquetWriter(fileStream))
+                    {
+                        writer.Write(ds);
+                    }
+                }
+            }
+        }
+
         private static string GetVersionNumber(string assemblyQualifiedName)
         {
             var fromVersion = (assemblyQualifiedName.Substring(assemblyQualifiedName.IndexOf("Version=") + 8));
@@ -210,7 +224,7 @@ namespace parq
         {
             Console.WriteLine("parq\t\t-\tParquet File Inspector for .net");
             Console.WriteLine("Usage\t\t-\tparq.exe Mode=operation InputFilePath=[relativeStringPath] DisplayMinWidth=[10]");
-            Console.WriteLine("\t\t\tOperation one of: interactive (default), full, schema, rowcount, head, tail, csv");
+            Console.WriteLine("\t\t\tOperation one of: interactive (default), full, schema, rowcount, head, tail, import, export");
 
             if (!string.IsNullOrEmpty(warning))
             {
