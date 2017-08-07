@@ -1,3 +1,6 @@
+param ([Boolean]$isPre=$true)
+
+
 # Build
 Set-Location ..\..\src\parq
 dotnet restore -r win10-x64
@@ -6,6 +9,10 @@ dotnet publish -c release -r win10-x64 -o ..\..\scripts\choco\build -f netcoreap
 # Get Version
 Set-Location ..\..\scripts\choco\build
 $version = .\parq.exe ShowVersion=true
+
+if ($isPre) {
+    $version += "-alpha"
+}
 
 Write-Host The Version of Parq built is $version
 
