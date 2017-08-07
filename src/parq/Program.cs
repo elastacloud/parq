@@ -6,6 +6,7 @@ using Parquet.Data;
 using Config.Net;
 using Parquet.Formats;
 using parq.Exporters;
+using parq.Importers;
 
 namespace parq
 {
@@ -171,10 +172,37 @@ namespace parq
                     return;
                 }
 
-                DataSet ds;
-                using (var csvStream = System.IO.File.OpenRead(sourcePath))
+                DataSet ds = null;
+
+                if (string.Compare(AppSettings.Instance.ImportFormat.Value, "csv", true) == 0)
                 {
-                    ds = CsvFormat.ReadToDataSet(csvStream, new CsvOptions { InferSchema = AppSettings.Instance.CsvInferSchema.Value, HasHeaders = AppSettings.Instance.CsvHasHeaders.Value });
+                    using (var csvStream = System.IO.File.OpenRead(sourcePath))
+                    {
+                        ds = CsvFormat.ReadToDataSet(csvStream, new CsvOptions { InferSchema = AppSettings.Instance.CsvInferSchema.Value, HasHeaders = AppSettings.Instance.CsvHasHeaders.Value });
+                    }
+                }
+                else if (string.Compare(AppSettings.Instance.ImportFormat.Value, "excel", true) == 0)
+                {
+                    using (var importer = new ExcelImporter(sourcePath))
+                    {
+                        if (importer.ContainsTable(AppSettings.Instance.ExcelWorksheetName.Value, AppSettings.Instance.ExcelDataTableName.Value))
+                        {
+                            ds = importer.TableToDataSet(AppSettings.Instance.ExcelWorksheetName.Value, AppSettings.Instance.ExcelDataTableName.Value);
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Error.WriteLine("ERROR: The Input Excel spreadsheet doesn't contain a table {0} on sheet {1}", AppSettings.Instance.ExcelWorksheetName.Value, AppSettings.Instance.ExcelDataTableName.Value);
+                            Console.ResetColor();
+                        }
+                    }
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("ERROR: only CSV or Excel are supported import formats");
+                    Console.ResetColor();
+                    return;
                 }
 
                 Console.WriteLine("Converting {0} lines", ds.RowCount);
