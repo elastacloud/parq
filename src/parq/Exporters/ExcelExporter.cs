@@ -10,6 +10,13 @@ namespace parq.Exporters
 {
     class ExcelExporter
     {
+        internal void ExportAs(string path, ViewModel viewModel)
+        {
+            using (var pkg = Export(viewModel))
+            {
+                pkg.SaveAs(new System.IO.FileInfo(path));
+            }
+        }
         internal ExcelPackage Export(ViewModel viewModel)
         {
             return createExcelPackage(viewModel);
