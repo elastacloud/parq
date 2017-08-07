@@ -15,7 +15,7 @@ if ($isPre) {
 }
 
 Write-Host The Version of Parq built is $version
-exit
+
 # Zip
 Add-Type -assembly "System.IO.Compression.FileSystem"
 [System.IO.Compression.ZipFile]::CreateFromDirectory((Get-Location).Path, [System.IO.Path]::Combine((Get-Location).Path, "..\parq\tools\parqInstall.zip"))
