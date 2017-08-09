@@ -17,8 +17,15 @@ VERIFICATION PROCESS
 4. If all three hashes match (hash from github, hash from chocolatey, hash from build process), the file is verified. 
 
 EXAMPLE: 
-wget https://github.com/elastacloud/parq/releases/download/#tag#/parqInstall.zip -OutFile .\parqInstall.zip 
-(get-filehash .\parqInstall.zip).Hash -eq "#hash#"
+wget https://github.com/elastacloud/parq/releases/download/#tag#/parqInstall.zip -OutFile .\parqInstall.github.#tag#.zip 
+(get-filehash .\parqInstall.github.#tag#.zip).Hash -eq "#hash#"
+wget https://chocolatey.org/api/v2/package/parq/#tag# -OutFile .\parqInstall.choco.#tag#.nupkg
+Add-Type -Assembly System.IO.Compression.FileSystem
+$chocoFile = "parqInstall.choco.#tag#.nupkg"
+$zip = [IO.Compression.ZipFile]::OpenRead($pwd.Path + "\" + $chocoFile)
+$zip.Entries | where {$_.Name -like 'parqInstall.zip'} | foreach {[System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, $pwd.Path+"\parqInstall.choco.#tag#.zip", $true)}
+(Get-FileHash .\parqInstall.choco.#tag#.zip).Hash -eq "#hash#"
+
 
 LICENSE:
 The file 'LICENSE.txt' has been obtained from <https://opensource.org/licenses/MIT>
