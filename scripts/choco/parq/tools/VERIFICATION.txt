@@ -2,23 +2,23 @@ VERIFICATION
 Verification is intended to assist the Chocolatey moderators and community
 in verifying that this package's contents are trustworthy.
 
-This is for the package version 3.0.1.0-alpha
+This is for the package version 3.1.1.0
 
 BACKGROUND
 The embedded software have been built from source held at <https://github.com/elastacloud/parq>
 The full build script is hosted here: <https://github.com/elastacloud/parq/blob/master/scripts/choco/package.ps1>
 The build is executed on a hosted file server in Elastacloud 
-The build process created the file parqInstall.zip which is stored as a release on Github https://github.com/elastacloud/parq/releases with a correct tag https://github.com/elastacloud/parq/releases/tag/3.0.1.0-alpha
+The build process created the file parqInstall.zip which is stored as a release on Github https://github.com/elastacloud/parq/releases with a correct tag https://github.com/elastacloud/parq/releases/tag/3.1.1.0
 
 VERIFICATION PROCESS
-1. Download the official released file https://github.com/elastacloud/parq/releases/download/3.0.1.0-alpha/parqInstall.zip
-2. Check the file hash is as per this document. This zip file should have a SHA256 checksum of 01E418602588547EB6A00D8C5578B08E92A1B07E403BC2E7F1677903EAA4703D
-3. Extract the bundled parqInstall.zip from the chocolatey package, has with get-filehash and compare to the hash 01E418602588547EB6A00D8C5578B08E92A1B07E403BC2E7F1677903EAA4703D and the hash derived from 2 above
+1. Download the official released file https://github.com/elastacloud/parq/releases/download/3.1.1.0/parqInstall.zip
+2. Check the file hash is as per this document. This zip file should have a SHA256 checksum of A55DF33F8E8C49DCD0BF81C301F9D154F94625F48C2AD8281729EC3C171299AE
+3. Extract the bundled parqInstall.zip from the chocolatey package, has with get-filehash and compare to the hash A55DF33F8E8C49DCD0BF81C301F9D154F94625F48C2AD8281729EC3C171299AE and the hash derived from 2 above
 4. If all three hashes match (hash from github, hash from chocolatey, hash from build process), the file is verified. 
 
 EXAMPLE: 
-wget https://github.com/elastacloud/parq/releases/download/3.0.1.0-alpha/parqInstall.zip -OutFile .\parqInstall.zip 
-(get-filehash .\parqInstall.zip).Hash -eq "01E418602588547EB6A00D8C5578B08E92A1B07E403BC2E7F1677903EAA4703D"
+wget https://github.com/elastacloud/parq/releases/download/3.1.1.0/parqInstall.zip -OutFile .\parqInstall.zip 
+(get-filehash .\parqInstall.zip).Hash -eq "A55DF33F8E8C49DCD0BF81C301F9D154F94625F48C2AD8281729EC3C171299AE"
 
 LICENSE:
 The file 'LICENSE.txt' has been obtained from <https://opensource.org/licenses/MIT>
