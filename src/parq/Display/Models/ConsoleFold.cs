@@ -6,7 +6,7 @@ namespace parq.Display.Models
 {
     class ConsoleFold
     {
-      public long IndexStart { get; set; }
-      public long IndexEnd { get; set; }
+      public int IndexStart { get; set; }
+      public int IndexEnd { get; set; }
    }
 }
