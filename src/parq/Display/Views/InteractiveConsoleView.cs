@@ -33,7 +33,7 @@ namespace parq.Display.Views
          Console.Clear();
 
          unreadSheets = GenerateSheets(viewPort, viewModel.Columns);
-         unreadFolds = GenerateFolds(viewPort, viewModel.RowCount);
+         unreadFolds = GenerateFolds(viewPort, (int)viewModel.RowCount);
 
          _currentSheet = unreadSheets.Pop();
          _currentFold = unreadFolds.Pop();
@@ -47,7 +47,7 @@ namespace parq.Display.Views
          DrawSheet(viewModel, _currentSheet, _currentFold, viewPort);
       }
 
-      private Stack<ConsoleFold> GenerateFolds(ViewPort viewPort, long totalRowCount)
+      private Stack<ConsoleFold> GenerateFolds(ViewPort viewPort, int totalRowCount)
       {
          var foldLength = GetRowCount();
 

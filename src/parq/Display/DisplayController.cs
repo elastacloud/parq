@@ -30,7 +30,7 @@ namespace parq.Display
         private IEnumerable<ColumnDetails> GenerateColumnList(DataSet dataSet)
         {
             var columnDetails = dataSet.Schema.Elements.Select(column =>
-               new ColumnDetails { columnWidth = column.Name.Length, columnName = column.Name, type = column.ElementType, isNullable = column.IsNullable });
+               new ColumnDetails { columnWidth = column.Name.Length, columnName = column.Name, type = column.ElementType, isNullable = true });
             var parsedSet = new List<ColumnDetails>();
             for (var i = 0; i < columnDetails.Count(); i++)
             {

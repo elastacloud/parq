@@ -4,7 +4,6 @@ using parq.Display;
 using parq.Display.Views;
 using Parquet.Data;
 using Config.Net;
-using Parquet.Formats;
 using parq.Exporters;
 using parq.Importers;
 
@@ -176,10 +175,13 @@ namespace parq
 
                 if (string.Compare(AppSettings.Instance.ImportFormat.Value, "csv", true) == 0)
                 {
-                    using (var csvStream = System.IO.File.OpenRead(sourcePath))
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Error.WriteLine("ERROR: The csv interoperability is disabled in this version. Please see https://github.com/elastacloud/parq/issues/36");
+                    return;
+                    /*using (var csvStream = System.IO.File.OpenRead(sourcePath))
                     {
                         ds = CsvFormat.ReadToDataSet(csvStream, new CsvOptions { InferSchema = AppSettings.Instance.CsvInferSchema.Value, HasHeaders = AppSettings.Instance.CsvHasHeaders.Value });
-                    }
+                    }*/
                 }
                 else if (string.Compare(AppSettings.Instance.ImportFormat.Value, "excel", true) == 0)
                 {
@@ -228,7 +230,7 @@ namespace parq
             Console.WriteLine(format, path);
         }
 
-        public static DataSet ReadFromParquetFileOffset(string path, long skip, long take, out long fileLen)
+        public static DataSet ReadFromParquetFileOffset(string path, long skip, int take, out long fileLen)
         {
             var fileInfo = new System.IO.FileInfo(path);
             fileLen = fileInfo.Length;
