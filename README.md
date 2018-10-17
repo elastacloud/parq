@@ -1,3 +1,11 @@
+# DEPRECATED
+
+Please use the dotnet global version of parq that is maintained in the (Parquet.NET)[https://github.com/elastacloud/parquet-dotnet] repo
+
+## Legacy docs follow
+## Legacy docs follow
+## Legacy docs follow
+
 # Parq
 
 ![Logo](doc/img/parquet.net.png)
